@@ -1,3 +1,4 @@
+#%%
 import argparse, os, sys, glob
 import cv2
 import torch
@@ -17,15 +18,6 @@ from contextlib import contextmanager, nullcontext
 from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
-
-# from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
-# from transformers import AutoFeatureExtractor
-
-
-# load safety model
-# safety_model_id = "CompVis/stable-diffusion-safety-checker"
-# safety_feature_extractor = AutoFeatureExtractor.from_pretrained(safety_model_id)
-# safety_checker = StableDiffusionSafetyChecker.from_pretrained(safety_model_id)
 
 
 def chunk(it, size):
@@ -82,16 +74,6 @@ def load_replacement(x):
         return y
     except Exception:
         return x
-
-
-# def check_safety(x_image):
-#     safety_checker_input = safety_feature_extractor(numpy_to_pil(x_image), return_tensors="pt")
-#     x_checked_image, has_nsfw_concept = safety_checker(images=x_image, clip_input=safety_checker_input.pixel_values)
-#     assert x_checked_image.shape[0] == len(has_nsfw_concept)
-#     for i in range(len(has_nsfw_concept)):
-#         if has_nsfw_concept[i]:
-#             x_checked_image[i] = load_replacement(x_checked_image[i])
-#     return x_checked_image, has_nsfw_concept
 
 
 def get_opts():
@@ -228,16 +210,16 @@ def get_opts():
     )
     opt = parser.parse_args()
 
+    return opt
+
+
+def main(opt):
     if opt.laion400m:
         print("Falling back to LAION 400M model...")
         opt.config = "configs/latent-diffusion/txt2img-1p4B-eval.yaml"
         opt.ckpt = "models/ldm/text2img-large/model.ckpt"
         opt.outdir = "outputs/txt2img-samples-laion400m"
 
-    return opt
-
-
-def main(opt):
     seed_everything(opt.seed)
 
     config = OmegaConf.load(f"{opt.config}")
@@ -344,6 +326,37 @@ def main(opt):
     print(f"Your samples are ready and waiting for you here: \n{outpath} \n"
           f" \nEnjoy.")
 
+    return outpath
 
-if __name__ == "__main__":
-    main(opt=get_opts())
+#%%
+import dataclasses
+
+@dataclasses.dataclass
+class Options:
+    prompt = "a painting of a virus monster playing guitar"
+    outdir = "outputs/txt2img-samples"
+    skip_grid = True
+    skip_save = False
+    ddim_steps = 100
+    plms = True
+    laion400m = False
+    fixed_code = True
+    ddim_eta = 0.0
+    n_iter=1
+    H=512
+    W=512
+    C=4
+    f=8
+    n_samples=1
+    n_rows=1
+    scale=7.5
+    from_file=None
+    config="configs/stable-diffusion/v1-inference.yaml"
+    ckpt="models/ldm/stable-diffusion-v1/model.ckpt"
+    seed=420
+    precision="autocast"
+
+main(opt=Options())
+
+
+main(opt=Options())
