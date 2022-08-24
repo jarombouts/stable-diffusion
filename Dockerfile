@@ -32,6 +32,10 @@ RUN /root/miniconda/envs/ldm/bin/python -m pip install -e .
 # self-test
 RUN /root/miniconda/envs/ldm/bin/python scripts/txt2img.py --help #--prompt "a photograph of an astronaut riding a horse" --plms
 
+# some extra stuff I think I need
+#RUN apt install -y vim
+#RUN /root/miniconda/envs/ldm/bin/python -m pip install imgcat
+
 # NOTE THE FOLLOWING:
 # before building this dockerfile, get the model weights!
 # store them in /models/ldm/stable-diffusion-v1/model.ckpt

@@ -18,8 +18,8 @@ from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 
-from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
-from transformers import AutoFeatureExtractor
+# from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
+# from transformers import AutoFeatureExtractor
 
 
 # load safety model
@@ -307,7 +307,7 @@ def main():
                         x_samples_ddim = x_samples_ddim.cpu().permute(0, 2, 3, 1).numpy()
 
                         # x_checked_image, has_nsfw_concept = check_safety(x_samples_ddim)
-                        x_checked_image = samples_ddim
+                        x_checked_image = np.array(x_samples_ddim)
 
                         x_checked_image_torch = torch.from_numpy(x_checked_image).permute(0, 3, 1, 2)
 
