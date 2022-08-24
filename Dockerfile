@@ -30,7 +30,7 @@ COPY . /app
 RUN /root/miniconda/envs/ldm/bin/python -m pip install -e .
 
 # self-test
-RUN /root/miniconda/envs/ldm/bin/python scripts/txt2img.py --prompt "a photograph of an astronaut riding a horse" --plms
+RUN /root/miniconda/envs/ldm/bin/python scripts/txt2img.py --help #--prompt "a photograph of an astronaut riding a horse" --plms
 
 # NOTE THE FOLLOWING:
 # before building this dockerfile, get the model weights!
