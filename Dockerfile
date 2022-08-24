@@ -25,8 +25,15 @@ WORKDIR /app
 COPY ./environment.yaml /app/environment.yaml
 RUN /root/miniconda/bin/conda env create -f environment.yaml
 
-# Copy codebase into app
+# Copy codebase into app; install repo into conda env
 COPY . /app
-RUN /root/miniconda/bin/pip install -e .
+RUN /root/miniconda/envs/ldm/bin/python -m pip install -e .
 
-# curl https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media > sd-v1-4.ckpt
+# self-test
+RUN /root/miniconda/envs/ldm/bin/python scripts/txt2img.py --prompt "a photograph of an astronaut riding a horse" --plms
+
+# NOTE THE FOLLOWING:
+# before building this dockerfile, get the model weights!
+# store them in /models/ldm/stable-diffusion-v1/model.ckpt
+# curl https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media \
+#      > /models/ldm/stable-diffusion-v1/model.ckpt
