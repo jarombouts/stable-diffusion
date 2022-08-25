@@ -37,6 +37,7 @@ RUN /root/miniconda/envs/ldm/bin/python -m pip install jupyter
 RUN mkdir /root/.jupyter
 COPY jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 
+ENV PYTHONPATH='/app'
 ENTRYPOINT /root/miniconda/envs/ldm/bin/jupyter notebook --allow-root
 # some extra stuff I think I need
 #RUN apt install -y vim

@@ -445,7 +445,7 @@ c.NotebookApp.allow_password_change = True
 
 ## The directory to use for notebooks and kernels.
 #  Default: ''
-# c.NotebookApp.notebook_dir = ''
+c.NotebookApp.notebook_dir = '/app'
 
 ## Whether to open in a browser after starting.
 #                          The specific browser used is platform dependent and
